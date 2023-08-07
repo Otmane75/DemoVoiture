@@ -3,7 +3,7 @@ import scripts.gestionDB as db
 from flask_restful import Api
 from flask_restful import Resource,reqparse
 
-import json
+import jsonify
 
 app = Flask(__name__)
 api = Api(app)
@@ -30,51 +30,42 @@ class getCar(Resource):
         return certificat
 api.add_resource(getCar, '/car', '/car/<int:param>')
 
-class manCert(Resource):
-    
+
+
+# Données pour remplir les sélecteurs
+#select1_options = db.get_cars()
+#select2_options = db.get_model(80)
+#select3_options = db.get_carosserie(753)
+
+
+
+
+class Options(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
-        self.parser.add_argument('csr', type=str)
-        self.parser.add_argument('nom', type=str)
-        self.parser.add_argument('prenom', type=str)
-        self.parser.add_argument('cert_ed25519', type=str)
-        self.parser.add_argument('cert_eccp256', type=str)
-        super(manCert, self).__init__()
-
-    def get(self):
-        
-        # Crée un dictionnaire Python
-        data = {
-            "nom": "John",
-            "age": 30,
-            "marié": True,
-            "hobbies": ["lecture", "voyages", "natation"]
-        }
-
-        
-        return data
-
+        self.parser.add_argument('model', type=int)
+        super(Options, self).__init__()
    
-    
-    def put(self):
-        args = self.parser.parse_args()
-        nom = args['nom']
-        prenom = args['prenom']
-        cert_ed25519 = args['cert_ed25519']
-        cert_eccp256 = args['cert_eccp256']
-        if db.ajouter_contact(nom,prenom,cert_ed25519,cert_eccp256):
-            data = {
-                "ret": "contact ajouté avec succes",
+    def get(self, marque=None,model=None):
+        if model is None:
+            if marque is None:
+                select1_options = db.get_cars()
+                return select1_options
+            else:
                 
-            }
+                select2_options = db.get_model(marque)
+                #model_options = get_model_options(model)
+                return select2_options
+        else:
+            select3_options = db.get_carosserie(model)
+            return select3_options
         
-        # Logique pour créer un nouvel utilisateur
-        #return {'user_id': param, 'name': 'John Doe'}
-        return data
-api.add_resource(manCert, '/csr', '/csr/<string:csr>')
 
+api.add_resource(Options, '/api/options','/api/options/<int:marque>','/api/options/<int:marque>/<int:model>')
 
-
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 '''
 @app.route('/')
 def hello():

@@ -1,0 +1,144 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="select1">Marque:</label>
+                <select class="form-control" id="select1">
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="select2">Modèle:</label>
+                <select class="form-control" id="select2">
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="select3">Carosserie:</label>
+                <select class="form-control" id="select3">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /*
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('GET', '/api/options');
+
+                                        xhr.onload = function() {
+                                            if (xhr.status === 200) {
+
+
+                                                response = JSON.parse(xhr.responseText);
+                                                console.log(xhr.responseText)
+                                                console.log(response)
+                                                const select = document.getElementById('select1');
+                                                response.forEach(option => {
+                                                    const opt = document.createElement('option');
+                                                    opt.value = option.id;
+                                                    opt.textContent = option.Marque;
+                                                    select.appendChild(opt);
+                                                });
+                                            }
+                                        }
+
+                                        xhr.send();*/
+
+        // Fonction pour remplir un sélecteur avec des options
+        function fillSelectOptions(selectorId, options) {
+            var select = document.getElementById(selectorId);
+            // Supprimer les options actuelles
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+            // Ajouter les nouvelles options
+            options.forEach(option => {
+                var opt = document.createElement('option');
+                opt.value = option.id;
+                opt.textContent = option.Marque;
+                select.appendChild(opt);
+            });
+        }
+
+        // Fonction pour effectuer une requête AJAX et remplir le select2 en fonction de la valeur sélectionnée dans select1
+        function updateSelect2() {
+            var select1Value = document.getElementById('select1').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/options/' + select1Value);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+
+                    console.log(xhr.responseText)
+                    console.log(response)
+                    const select = document.getElementById('select2');
+                    select.innerHTML = '';
+                    response.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.id;
+                        opt.textContent = option.Model;
+                        select.appendChild(opt);
+                    });
+
+                }
+            }
+
+            xhr.send();
+        }
+
+        function updateSelect3() {
+            var select1Value = document.getElementById('select1').value;
+            var select2Value = document.getElementById('select2').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/options/' + select1Value + '/' + select2Value);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+
+                    console.log(xhr.responseText)
+                    console.log(response)
+                    const select = document.getElementById('select3');
+                    select.innerHTML = '';
+                    response.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.id;
+                        opt.textContent = option.Carosserie;
+                        select.appendChild(opt);
+                    });
+
+                }
+            }
+
+            xhr.send();
+        }
+
+        // Appel à l'API Flask-RESTful pour obtenir les options des sélecteurs
+        fetch("/api/options")
+            .then(response => response.json())
+            .then(data => {
+                // Remplir le select1 avec les options renvoyées par l'API
+                fillSelectOptions('select1', data);
+                // Mettre à jour le select2 lorsque la valeur de select1 change
+                document.getElementById('select1').addEventListener('change', updateSelect2);
+                document.getElementById('select2').addEventListener('change', updateSelect3);
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+
+</body>
+
+</html>
