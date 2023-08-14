@@ -63,14 +63,33 @@ class Options(Resource):
 
 api.add_resource(Options, '/api/options','/api/options/<int:marque>','/api/options/<int:marque>/<int:model>')
 
+class Insertion(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('model', type=str)
+        self.parser.add_argument('marque', type=str)
+        self.parser.add_argument('carosserie', type=str)
+        super(Insertion, self).__init__()
+   
+    def get(self, marque=None,model=None,carosserie=None):
+        if (model is None) or (marque is None) or (carosserie is None):
+            reponse = "Veuillez remplir tt les champs"
+            return reponse
+        else:
+            reponse = db.add_carosserie(marque, model,carosserie)
+            return reponse
+        
+
+api.add_resource(Insertion, '/api/insertion/<string:marque>/<string:model>/<string:carosserie>')
+
+
+
+
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
-'''
-@app.route('/')
-def hello():
-    contacts = db.lire_contacts()
-    return contacts
-'''
+
+
 if __name__ == '__main__':
     app.run()

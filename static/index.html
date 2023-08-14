@@ -9,7 +9,7 @@
 
 
     <div class="container mt-5">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-4">
                 <label for="select1">Marque:</label>
                 <select class="form-control" id="select1">
@@ -28,6 +28,77 @@
                 </select>
             </div>
         </div>
+    -->
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        Infos Carosserie
+                    </div>
+
+                    <div class="card-body">
+
+                        <label for="select1">Marque:</label>
+                        <select class="form-control" id="select1">
+                        </select>
+
+                        <label for="select2">Modèle:</label>
+                        <select class="form-control" id="select2">
+                        </select>
+
+                        <label for="select3">Carrosserie:</label>
+                        <select class="form-control" id="select3">
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        Ajouter une voiture
+                    </div>
+
+                    <div class="card-body">
+
+                        <form>
+                            <div class="form-group">
+                                <label for="marque">Marque</label>
+                                <input type="text" class="form-control" id="marque">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modele">Modèle</label>
+                                <input type="text" class="form-control" id="modele">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carosserie">Carrosserie</label>
+                                <input type="text" class="form-control" id="carosserie">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Zone de notification -->
+        <div id="notification"></div>
     </div>
 
     <script>
@@ -52,7 +123,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/api/options/' + select1Value);
 
-            xhr.onload = function() {
+            xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
@@ -71,6 +142,20 @@
             }
 
             xhr.send();
+
+
+
+        }
+
+        function updateSelect1() {
+            updateSelect2();
+            //updateSelect3();
+
+            setTimeout(() => {
+                console.log("ok");
+                updateSelect3()
+
+            }, 100);
         }
 
         function updateSelect3() {
@@ -79,7 +164,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/api/options/' + select1Value + '/' + select2Value);
 
-            xhr.onload = function() {
+            xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
@@ -107,10 +192,56 @@
 
                 fillSelectOptions('select1', data);
 
-                document.getElementById('select1').addEventListener('change', updateSelect2);
+                document.getElementById('select1').addEventListener('change', updateSelect1);
                 document.getElementById('select2').addEventListener('change', updateSelect3);
             })
             .catch(error => console.error('Erreur:', error));
+
+        //---------------------------------------------------------------
+
+        const form = document.querySelector('form');
+
+        // Ajouter un listener sur le submit
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+
+            // Annuler l'envoi du formulaire
+            e.preventDefault();
+
+            // Récupérer les valeurs des inputs
+            const marque = document.getElementById('marque').value;
+            const modele = document.getElementById('modele').value;
+            const carosserie = document.getElementById('carosserie').value;
+
+            // Appeler la fonction avec les valeurs
+            ajouterVoiture(marque, modele, carosserie);
+
+        }
+
+        function ajouterVoiture(marque, modele, carosserie) {
+            // Traiter les données
+            console.log(marque, modele, carosserie);
+
+            // Appel API
+            fetch(`/api/insertion/${marque}/${modele}/${carosserie}`)
+                .then(response => response.json())
+                .then(data => {
+
+
+                    //console.log(data);
+
+                    // Afficher une notification avec le résultat
+                    let html = `
+        <div class="alert alert-success">
+          ${data}
+        </div>
+      `;
+
+                    document.getElementById('notification').innerHTML = html;
+
+                });
+        }
     </script>
 
 </body>
