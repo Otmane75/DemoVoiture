@@ -1,3 +1,4 @@
+######
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
@@ -78,11 +79,11 @@ class Specification(Base):
 
 
 def get_cars():
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -98,11 +99,11 @@ def get_cars():
     return cars_list
 
 def get_model(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -119,11 +120,11 @@ def get_model(target_id):
     return model_list
 
 def get_serie(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -134,11 +135,11 @@ def get_serie(target_id):
         print(f"Model: {car.id_car_model},id: {car.id_car_serie},  Serie: {car.name}")
     session.close()
 def get_trim(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -149,11 +150,11 @@ def get_trim(target_id):
         print(f"Model: {car.id_car_model},serie: {car.id_car_serie},  Trim: {car.id_car_trim}")
     session.close()
 def get_carosserie(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -181,11 +182,11 @@ def get_carosserie(target_id):
 
 ######################################################################################
 def add_carosserie(make, model,carosserie):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 

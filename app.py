@@ -1,5 +1,5 @@
 from flask import Flask
-import scripts.gestionDB as db
+import scripts.gestionDB_sansgeneration as db
 from flask_restful import Api
 from flask_restful import Resource,reqparse
 
@@ -46,7 +46,8 @@ class Options(Resource):
         self.parser.add_argument('model', type=int)
         super(Options, self).__init__()
    
-    def get(self, marque=None,model=None):
+    def get(self, marque=None,model=None,generation=None):
+  
         if model is None:
             if marque is None:
                 select1_options = db.get_cars()
@@ -57,9 +58,31 @@ class Options(Resource):
                 #model_options = get_model_options(model)
                 return select2_options
         else:
+            #select3_options = db.get_generation(model)
+            select3_options=db.get_carosserie(model)
+            return select3_options
+
+    '''
+    def get(self, marque=None,model=None,generation=None):
+        if generation is None:
+            if model is None:
+                if marque is None:
+                    select1_options = db.get_cars()
+                    return select1_options
+                else:
+                    
+                    select2_options = db.get_model(marque)
+                    #model_options = get_model_options(model)
+                    return select2_options
+            else:
+                #select3_options = db.get_generation(model)
+                select3_options=db.get_carosserie(model)
+                return select3_options
+        else:
             select3_options = db.get_carosserie(model)
             return select3_options
-        
+
+        '''
 
 api.add_resource(Options, '/api/options','/api/options/<int:marque>','/api/options/<int:marque>/<int:model>')
 

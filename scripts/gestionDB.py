@@ -29,6 +29,19 @@ port : 3306
 database : dbs11750439
 
 
+
+user = 'root'
+    password = ''
+    host = 'localhost'  
+    port = '3306'  
+    database = 'car8'
+
+user = 'admin'
+password = 'Test1234567+-'
+host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+port = '3306'  
+database = 'voitures'
+
 '''
 
 
@@ -50,10 +63,17 @@ class Model(Base):
     #date_create = Column(Integer)
    # date_update = Column(Integer)
    # id_car_type = Column(Integer)
+class Generation(Base):
+    __tablename__ = 'car_generation'
+    id_car_generation = Column(Integer, primary_key=True)
+    id_car_model = Column(Integer)
+    name = Column(String(255))
+
 class Serie(Base):
     __tablename__ = 'car_serie'
     id_car_serie = Column(Integer, primary_key=True)
     id_car_model = Column(Integer)
+    id_car_generation = Column(Integer)
     name = Column(String(255))
     #date_create = Column(Integer)
    # date_update = Column(Integer)
@@ -78,11 +98,11 @@ class Specification(Base):
 
 
 def get_cars():
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -98,11 +118,11 @@ def get_cars():
     return cars_list
 
 def get_model(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -118,12 +138,33 @@ def get_model(target_id):
     session.close()
     return model_list
 
-def get_serie(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+def get_generation(target_id):
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
+
+    engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    cars = session.query(Generation).filter(Generation.id_car_model == target_id).all()
+    generation_list=[]
+    for car in cars:
+        #print(f"ID: {car.id_car_model}, Model: {car.name}")
+        #model_list.append(car.name)
+        ele={"id": car.id_car_generation, "Generation": car.name}
+        generation_list.append(ele)
+    session.close()
+    return generation_list
+
+def get_serie(target_id):
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    port = '3306'  
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -134,11 +175,11 @@ def get_serie(target_id):
         print(f"Model: {car.id_car_model},id: {car.id_car_serie},  Serie: {car.name}")
     session.close()
 def get_trim(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -148,32 +189,43 @@ def get_trim(target_id):
     for car in cars:
         print(f"Model: {car.id_car_model},serie: {car.id_car_serie},  Trim: {car.id_car_trim}")
     session.close()
-def get_carosserie(target_id):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+def get_carosserie(model_id,generation_id):
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
     Session = sessionmaker(bind=engine)
     session = Session()
+
+
+    series=session.query(Serie).filter(Serie.id_car_model == model_id).filter(Serie.id_car_generation == generation_id).all()
+
     geted=[]
-    trims = session.query(Trim).filter(Trim.id_car_model == target_id).all()
+    print(len(series))
+    
 
     carosseries_list=[]
-    for trim in trims:
+    for serie in series:
+        trim_car = session.query(Trim).filter(Trim.id_car_serie == serie.id_car_serie).first()
+        
+ 
+        
         #print(f"Model: {trim.id_car_model},serie: {trim.id_car_serie},  Trim: {trim.id_car_trim}")
 
-        cars = session.query(Specification).filter(Specification.id_car_trim == trim.id_car_trim).filter(Specification.id_car_specification == 2).all()
-        
+        cars = session.query(Specification).filter(Specification.id_car_specification == 2).filter(Specification.id_car_trim == trim_car.id_car_trim).all()
+    
         for car in cars:
+            print(car.value)
             if car.value not in geted:
                 #print(f"Carosserie: {car.value},spec: {car.id_car_specification},  Trim: {car.id_car_trim}")
                 geted.append(car.value)
                 ele={"id": car.id_car_specification, "Carosserie": car.value}
                 carosseries_list.append(ele)
+        
     #carosseries_list=geted
         
     session.close()
@@ -181,11 +233,11 @@ def get_carosserie(target_id):
 
 ######################################################################################
 def add_carosserie(make, model,carosserie):
-    user = 'root'
-    password = ''
-    host = 'localhost'  
+    user = 'admin'
+    password = 'Test1234567+-'
+    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
     port = '3306'  
-    database = 'car6'
+    database = 'voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -262,8 +314,14 @@ def add_carosserie(make, model,carosserie):
 
 '''
 get_cars()
+
 print("------------------------------------------------------------")
-get_model(76)
+print(get_model(147))
+
+print(get_generation(1599))
+'''
+#print(get_carosserie(1599,127952))
+'''
 print("------------------------------------------------------------")
 #get_serie(810)
 #get_trim(810)
@@ -271,3 +329,7 @@ print("------------------------------------------------------------")
 get_carosserie(754)
 
 '''
+
+
+
+

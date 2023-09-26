@@ -48,6 +48,9 @@
                         <label for="select2">Modèle:</label>
                         <select class="form-control" id="select2">
                         </select>
+                        <!--  <label for="generat">Génèration:</label>
+                        <select class="form-control" id="generat">
+                        </select> -->
 
                         <label for="select3">Carrosserie:</label>
                         <select class="form-control" id="select3">
@@ -151,17 +154,20 @@
             updateSelect2();
             //updateSelect3();
 
-            setTimeout(() => {
+            /*      setTimeout(() => {
                 console.log("ok");
-                updateSelect3()
+                updateSelectGene()
 
-            }, 100);
+            }, 100);*/
+
         }
 
         function updateSelect3() {
             var select1Value = document.getElementById('select1').value;
             var select2Value = document.getElementById('select2').value;
+            // var generation = document.getElementById('generat').value;
             var xhr = new XMLHttpRequest();
+            //xhr.open('GET', '/api/options/' + select1Value + '/' + select2Value + '/' + generation);
             xhr.open('GET', '/api/options/' + select1Value + '/' + select2Value);
 
             xhr.onload = function () {
@@ -186,6 +192,38 @@
         }
 
 
+        function updateSelectGene() {
+            var select1Value = document.getElementById('select1').value;
+            var select2Value = document.getElementById('select2').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/options/' + select1Value + '/' + select2Value);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+
+                    console.log(xhr.responseText)
+                    console.log(response)
+                    //const select = document.getElementById('generat');
+                    //select.innerHTML = '';
+                    /*response.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.id;
+                        opt.textContent = option.Generation;
+                        select.appendChild(opt);
+                    });*/
+
+                }
+            }
+
+            xhr.send();
+            setTimeout(() => {
+                console.log("ok");
+                updateSelect3()
+
+            }, 200);
+        }
+
         fetch("/api/options")
             .then(response => response.json())
             .then(data => {
@@ -194,6 +232,7 @@
 
                 document.getElementById('select1').addEventListener('change', updateSelect1);
                 document.getElementById('select2').addEventListener('change', updateSelect3);
+                //  document.getElementById('generat').addEventListener('change', updateSelect3);
             })
             .catch(error => console.error('Erreur:', error));
 
