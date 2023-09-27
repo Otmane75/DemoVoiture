@@ -30,6 +30,13 @@ port : 3306
 database : dbs11750439
 
 
+user = 'freedb_kemado'
+password = 'XX2?%egTkt?*hH#'
+host = 'sql.freedb.tech'  
+port = '3306'  
+database = 'freedb_voitures'
+
+
 '''
 
 
@@ -79,11 +86,11 @@ class Specification(Base):
 
 
 def get_cars():
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -99,11 +106,11 @@ def get_cars():
     return cars_list
 
 def get_model(target_id):
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -120,11 +127,11 @@ def get_model(target_id):
     return model_list
 
 def get_serie(target_id):
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -135,11 +142,11 @@ def get_serie(target_id):
         print(f"Model: {car.id_car_model},id: {car.id_car_serie},  Serie: {car.name}")
     session.close()
 def get_trim(target_id):
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -150,11 +157,11 @@ def get_trim(target_id):
         print(f"Model: {car.id_car_model},serie: {car.id_car_serie},  Trim: {car.id_car_trim}")
     session.close()
 def get_carosserie(target_id):
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
@@ -182,11 +189,11 @@ def get_carosserie(target_id):
 
 ######################################################################################
 def add_carosserie(make, model,carosserie):
-    user = 'admin'
-    password = 'Test1234567+-'
-    host = 'cars.cloomnz8xdnf.eu-west-3.rds.amazonaws.com'  
+    user = 'freedb_kemado'
+    password = 'XX2?%egTkt?*hH#'
+    host = 'sql.freedb.tech'  
     port = '3306'  
-    database = 'voitures'
+    database = 'freedb_voitures'
 
     engine = create_engine(f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}')
 
